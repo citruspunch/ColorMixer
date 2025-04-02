@@ -6,8 +6,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -31,8 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.colormixer.ui.theme.ColorMixerTheme
 import kotlin.math.roundToInt
@@ -98,30 +99,56 @@ fun ControlManagement() {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ResultingColor(red.roundToInt(), green.roundToInt(), blue.roundToInt())
-        SliderManagement(Color(255, 0, 0), onChanged = { red = it })
-        SliderManagement(Color(0, 255, 0), onChanged = { green = it })
-        SliderManagement(Color(0, 0, 255), onChanged = { blue = it })
+        Spacer(modifier = Modifier.height(16.dp))
+        SliderManagement("Rojo", Color.Red) { red = it }
+        Spacer(modifier = Modifier.height(16.dp))
+        SliderManagement("Verde", Color.Green) { green = it }
+        Spacer(modifier = Modifier.height(16.dp))
+        SliderManagement("Azul", Color.Blue) { blue = it }
     }
 }
 
 @Composable
-fun SliderManagement(color: Color, onChanged: (Float) -> Unit) {
+fun SliderManagement(label: String, color: Color, onChanged: (Float) -> Unit) {
     var sliderPosition by remember { mutableFloatStateOf(0f) }
-    Slider(
-        modifier = Modifier.size(width = 300.dp, height = 50.dp),
-        value = sliderPosition,
-        onValueChange = {
-            sliderPosition = it
-            onChanged(it)
-        },
-        colors = SliderDefaults.colors(
-            thumbColor = color,
-            activeTrackColor = color,
-            inactiveTrackColor = MaterialTheme.colorScheme.secondaryContainer,
-        ),
-        steps = 255,
-        valueRange = 0f..255f,
 
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 30.dp, vertical = 8.dp)
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.titleSmall,
+            color = color,
+            modifier = Modifier.padding(bottom = 4.dp)
         )
-    Text(text = sliderPosition.roundToInt().toString(), textAlign = TextAlign.Center)
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Slider(
+                value = sliderPosition,
+                onValueChange = {
+                    sliderPosition = it
+                    onChanged(it)
+                },
+                modifier = Modifier
+                    .weight(1f)
+                    .height(32.dp),
+                valueRange = 0f..255f,
+                steps = 0,
+                colors = SliderDefaults.colors(
+                    thumbColor = color,
+                    activeTrackColor = color,
+                    inactiveTrackColor = color.copy(alpha = 0.15f)
+                )
+            )
+            Text(
+                text = sliderPosition.roundToInt().toString(),
+                modifier = Modifier.padding(start = 8.dp),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
 }
