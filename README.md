@@ -12,9 +12,9 @@
 
 ## Screenshots
 
-![Color Mixer Screenshot 1](Screenshot_20250401_231154.png)
+<img src="Screenshot_20250401_231154.png" alt="ColorMixer Screenshot 1" width="300"/>
 
-![Color Mixer Screenshot 1](Screenshot_20250401_231517.png)
+<img src="Screenshot_20250401_231517.png" alt="ColorMixer Screenshot 2" width="300"/>
 
 ---
 
